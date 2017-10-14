@@ -1,0 +1,6 @@
+[package]
+name = "rusty-chain"
+version = "0.1.0"
+authors = ["Lorenzo Manacorda <lorenzo@mailbox.org>"]
+
+[dependencies]
