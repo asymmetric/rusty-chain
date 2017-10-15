@@ -3,12 +3,14 @@ use time;
 
 const HASH_SIZE: usize = 32;
 
+type Sha256Hash = [u8; HASH_SIZE];
+
 #[derive(Debug, Default)]
 pub struct Block {
     // block headers
     timestamp: i64,
-    prev_block_hash: [u8; HASH_SIZE],
-    hash: [u8; HASH_SIZE],
+    prev_block_hash: Sha256Hash,
+    hash:  Sha256Hash,
 
     // transactions
     data: Vec<u8>,
@@ -28,19 +30,20 @@ impl Block {
         s
     }
 
-    fn hash(&self) -> [u8; HASH_SIZE] {
+    fn hash(&self) -> Sha256Hash {
         let mut hasher = Sha256::default();
         hasher.input(&self.headers());
         let hash = hasher.result();
         println!("the hash is {:?}", hash);
 
-        let mut retval: [u8; HASH_SIZE] = Default::default();
+        let mut retval: Sha256Hash = Default::default();
 
         retval.copy_from_slice(&hash.as_slice());
 
         retval
     }
 
+    // TODO no need to use a Vec here
     fn headers(&self) -> Vec<u8> {
         let mut vec = Vec::new();
 
