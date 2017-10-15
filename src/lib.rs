@@ -1,4 +1,4 @@
-extern crate sha2;
+extern crate crypto;
 extern crate time;
 
 pub mod block;

@@ -1,4 +1,5 @@
-use sha2::{Digest, Sha256};
+use crypto::digest::Digest;
+use crypto::sha2::Sha256;
 use time;
 
 const HASH_SIZE: usize = 32;
@@ -38,24 +39,31 @@ impl Block {
         self.hash.clone()
     }
 
-    pub fn raw_data(&self) -> &[u8] {
+    pub fn pretty_hash(&self) -> String {
+        let mut vec = Vec::new();
+
+        for el in self.hash.iter() {
+            vec.push(*el);
+        }
+        String::from_utf8(vec).unwrap()
+    }
+
+    pub fn data(&self) -> &[u8] {
         self.data.as_slice()
     }
 
-    pub fn data(&self) -> String {
+    pub fn pretty_data(&self) -> String {
         String::from_utf8(self.data.clone()).unwrap()
     }
 
     fn calculate_hash(&self) -> Sha256Hash {
-        let mut hasher = Sha256::default();
+        let mut hasher = Sha256::new();
         hasher.input(&self.headers());
-        let hash = hasher.result();
 
-        let mut retval: Sha256Hash = Default::default();
+        let mut hash: Sha256Hash = Default::default();
+        hasher.result(&mut hash);
 
-        retval.copy_from_slice(&hash.as_slice());
-
-        retval
+        hash
     }
 
     fn headers(&self) -> Vec<u8> {
