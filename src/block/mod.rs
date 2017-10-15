@@ -19,7 +19,7 @@ pub struct Block {
 impl Block {
     pub fn new(data: &str, prev_hash: Sha256Hash) -> Self {
         let mut s = Self {
-            timestamp: time::now_utc().to_timespec().sec,
+            timestamp: timestamp(),
             data: data.to_owned().into_bytes(),
             prev_block_hash: prev_hash,
             hash: Default::default(),
@@ -60,3 +60,6 @@ impl Block {
 
 }
 
+fn timestamp() -> i64 {
+    time::now_utc().to_timespec().sec
+}
