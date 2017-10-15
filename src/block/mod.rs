@@ -15,10 +15,10 @@ pub struct Block {
 }
 
 impl Block {
-    pub fn new(data: Vec<u8>) -> Self {
+    pub fn new(data: &str) -> Self {
         let mut s = Self {
             timestamp: time::now_utc().to_timespec().sec,
-            data: data,
+            data: data.to_owned().into_bytes(),
             prev_block_hash: Default::default(),
             hash: Default::default(),
         };
