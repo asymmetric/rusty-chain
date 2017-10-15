@@ -42,7 +42,6 @@ impl Block {
         let mut hasher = Sha256::default();
         hasher.input(&self.headers());
         let hash = hasher.result();
-        println!("the hash is {:?}", hash);
 
         let mut retval: Sha256Hash = Default::default();
 
