@@ -30,6 +30,10 @@ impl Block {
         s
     }
 
+    pub fn genesis() -> Self {
+        Self { timestamp: timestamp(), ..Default::default() }
+    }
+
     pub fn hash(&self) -> Sha256Hash {
         self.hash.clone()
     }
