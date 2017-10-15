@@ -20,7 +20,7 @@ impl Block {
     pub fn new(data: &str, prev_hash: Sha256Hash) -> Self {
         let mut s = Self {
             timestamp: timestamp(),
-            data: data.to_owned().into_bytes(),
+            data: convert_data(data),
             prev_block_hash: prev_hash,
             hash: Default::default(),
         };
@@ -65,4 +65,8 @@ impl Block {
 
 fn timestamp() -> i64 {
     time::now_utc().to_timespec().sec
+}
+
+fn convert_data(data: &str) -> Vec<u8> {
+    data.to_owned().into_bytes()
 }
