@@ -58,7 +58,6 @@ impl Block {
         retval
     }
 
-    // TODO no need to use a Vec here
     fn headers(&self) -> Vec<u8> {
         let mut vec = Vec::new();
 
