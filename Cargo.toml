@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Lorenzo Manacorda <lorenzo@mailbox.org>"]
 
 [dependencies]
+sha2 = "0.6.0"
+time = "0.1"
