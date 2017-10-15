@@ -1,8 +1,10 @@
 extern crate rusty_chain;
 
+use rusty_chain::block::Block;
+
 fn main() {
     println!("Welcome to Rusty Chain");
-    let b = rusty_chain::Block::default();
+    let b = Block::default();
 
     println!("b is {:?}", b);
 }
