@@ -8,4 +8,6 @@ fn main() {
     let mut chain = Blockchain::new();
     println!("Send 1 RC to foo");
     chain.add_block("enjoy, foo!");
+
+    chain.traverse();
 }

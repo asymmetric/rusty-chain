@@ -26,4 +26,10 @@ impl Blockchain {
 
         true
     }
+
+    pub fn traverse(&self) {
+        for block in self.blocks.iter() {
+            println!("block has hash {:?}", block.hash());
+        }
+    }
 }
