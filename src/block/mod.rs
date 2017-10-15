@@ -1,12 +1,14 @@
 use sha2::{Digest, Sha256};
 use time;
 
+const HASH_SIZE: usize = 32;
+
 #[derive(Debug, Default)]
 pub struct Block {
     // block headers
     timestamp: i64,
-    prev_block_hash: Vec<u8>,
-    hash: Vec<u8>,
+    prev_block_hash: [u8; HASH_SIZE],
+    hash: [u8; HASH_SIZE],
 
     // transactions
     data: Vec<u8>,
@@ -17,8 +19,8 @@ impl Block {
         let mut s = Self {
             timestamp: time::now_utc().to_timespec().sec,
             data: data,
-            prev_block_hash: Vec::new(),
-            hash: Vec::new(),
+            prev_block_hash: [0; HASH_SIZE],
+            hash: [0; HASH_SIZE],
         };
 
         s.hash = s.hash();
@@ -26,13 +28,17 @@ impl Block {
         s
     }
 
-    fn hash(&self) -> Vec<u8> {
+    fn hash(&self) -> [u8; HASH_SIZE] {
         let mut hasher = Sha256::default();
         hasher.input(&self.headers());
         let hash = hasher.result();
         println!("the hash is {:?}", hash);
 
-        hash.to_vec()
+        let mut retval: [u8; HASH_SIZE] = Default::default();
+
+        retval.copy_from_slice(&hash.as_slice());
+
+        retval
     }
 
     fn headers(&self) -> Vec<u8> {
