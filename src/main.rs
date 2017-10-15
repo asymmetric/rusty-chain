@@ -9,5 +9,6 @@ fn main() {
     println!("Send 1 RC to foo");
     chain.add_block("enjoy, foo!");
 
+    println!("Traversing blockchain:\n");
     chain.traverse();
 }
