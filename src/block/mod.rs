@@ -38,6 +38,14 @@ impl Block {
         self.hash.clone()
     }
 
+    pub fn raw_data(&self) -> &[u8] {
+        self.data.as_slice()
+    }
+
+    pub fn data(&self) -> String {
+        String::from_utf8(self.data.clone()).unwrap()
+    }
+
     fn calculate_hash(&self) -> Sha256Hash {
         let mut hasher = Sha256::default();
         hasher.input(&self.headers());
