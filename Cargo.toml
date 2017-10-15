@@ -1,5 +1,5 @@
 [package]
-name = "rusty-chain"
+name = "rusty_chain"
 version = "0.1.0"
 authors = ["Lorenzo Manacorda <lorenzo@mailbox.org>"]
 
