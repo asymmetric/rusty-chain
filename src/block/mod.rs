@@ -25,12 +25,16 @@ impl Block {
             hash: Default::default(),
         };
 
-        s.hash = s.hash();
+        s.hash = s.calculate_hash();
 
         s
     }
 
-    fn hash(&self) -> Sha256Hash {
+    pub fn hash(&self) -> Sha256Hash {
+        self.hash.clone()
+    }
+
+    fn calculate_hash(&self) -> Sha256Hash {
         let mut hasher = Sha256::default();
         hasher.input(&self.headers());
         let hash = hasher.result();
