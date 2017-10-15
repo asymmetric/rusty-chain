@@ -19,8 +19,8 @@ impl Block {
         let mut s = Self {
             timestamp: time::now_utc().to_timespec().sec,
             data: data,
-            prev_block_hash: [0; HASH_SIZE],
-            hash: [0; HASH_SIZE],
+            prev_block_hash: Default::default(),
+            hash: Default::default(),
         };
 
         s.hash = s.hash();
