@@ -4,7 +4,7 @@ use crypto::digest::Digest;
 use num_bigint::BigUint;
 use num_traits::One;
 
-const TARGET_BITS: u64 = 24;
+const TARGET_BITS: usize = 5;
 const MAX_NONCE: i32 = 100_000;
 
 pub struct Pow<'a> {
