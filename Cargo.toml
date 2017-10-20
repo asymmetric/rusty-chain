@@ -6,3 +6,4 @@ authors = ["Lorenzo Manacorda <lorenzo@mailbox.org>"]
 [dependencies]
 rust-crypto = "^0.2"
 time = "0.1"
+hex = "^0.2"

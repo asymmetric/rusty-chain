@@ -1,5 +1,6 @@
 use crypto::digest::Digest;
 use crypto::sha2::Sha256;
+use hex::ToHex;
 use time;
 
 const HASH_SIZE: usize = 32;
@@ -40,12 +41,7 @@ impl Block {
     }
 
     pub fn pretty_hash(&self) -> String {
-        let mut vec = Vec::new();
-
-        for el in self.hash.iter() {
-            vec.push(*el);
-        }
-        String::from_utf8(vec).unwrap()
+        self.hash.to_hex()
     }
 
     pub fn data(&self) -> &[u8] {
