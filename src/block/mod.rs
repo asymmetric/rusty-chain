@@ -1,11 +1,10 @@
-use crypto::digest::Digest;
-use crypto::sha2::Sha256;
 use hex::ToHex;
 use time;
+use pow::Pow;
 
 const HASH_SIZE: usize = 32;
 
-type Sha256Hash = [u8; HASH_SIZE];
+pub type Sha256Hash = [u8; HASH_SIZE];
 
 #[derive(Debug, Default)]
 pub struct Block {
@@ -56,16 +55,17 @@ impl Block {
     }
 
     fn calculate_hash(&self) -> Sha256Hash {
-        let mut hasher = Sha256::new();
-        hasher.input(&self.headers());
-        let mut hash = Sha256Hash::default();
-
-        hasher.result(&mut hash);
+        let pow = Pow::new(&self);
+        let hash = match pow.run() {
+            Some(hash) => hash,
+            // TODO return an Option instead
+            None => [0; 32],
+        };
 
         hash
     }
 
-    fn headers(&self) -> Vec<u8> {
+    pub fn headers(&self) -> Vec<u8> {
         let mut vec = Vec::new();
 
         vec.extend_from_slice(&self.timestamp.to_string().as_bytes());
