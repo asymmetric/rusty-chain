@@ -33,7 +33,7 @@ impl Block {
     }
 
     pub fn genesis() -> Self {
-        Self { timestamp: timestamp(), data: convert_data("Genesis block"), ..Default::default() }
+        Self::new("Genesis block", Sha256Hash::default())
     }
 
     pub fn hash(&self) -> Sha256Hash {
