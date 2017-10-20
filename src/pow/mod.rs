@@ -23,15 +23,15 @@ impl<'a> Pow<'a> {
         }
     }
 
-    pub fn run(&self) -> Option<Sha256Hash> {
-        let mut nonce = 0i32;
+    pub fn run(&self) -> Option<(u64, Sha256Hash)> {
+        let mut nonce = 0;
 
         while nonce < MAX_NONCE {
             let hash = Self::calculate_hash(self.block, nonce);
             let hash_int = BigUint::from_bytes_be(&hash);
 
             if hash_int < self.target {
-                return Some(hash)
+                return Some((nonce, hash))
             } else {
                 nonce += 1;
             }
@@ -41,7 +41,8 @@ impl<'a> Pow<'a> {
 
     }
 
-    fn calculate_hash(block: &Block, nonce: i32) -> Sha256Hash {
+    fn calculate_hash(block: &Block, nonce: u64) -> Sha256Hash {
+        // TODO should we also hash the target?
         let mut headers = block.headers();
         headers.push(nonce as u8);
 

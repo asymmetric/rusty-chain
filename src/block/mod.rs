@@ -13,6 +13,7 @@ pub struct Block {
     timestamp: i64,
     prev_block_hash: Sha256Hash,
     hash:  Sha256Hash,
+    nonce: u64,
 
     // transactions
     data: Vec<u8>,
@@ -25,9 +26,12 @@ impl Block {
             data: convert_data(data),
             prev_block_hash: prev_hash,
             hash: Default::default(),
+            nonce: 0,
         };
 
-        s.hash = s.calculate_hash();
+        let (nonce, hash) = s.calculate_hash();
+        s.nonce = nonce;
+        s.hash = hash;
 
         s
     }
@@ -55,15 +59,16 @@ impl Block {
         }
     }
 
-    fn calculate_hash(&self) -> Sha256Hash {
+    fn calculate_hash(&self) -> (u64, Sha256Hash) {
+        // TODO Only needs run
         let pow = Pow::new(&self);
-        let hash = match pow.run() {
-            Some(hash) => hash,
+        let (nonce, hash) = match pow.run() {
+            Some((nonce, hash)) => (nonce, hash),
             // TODO return an Option instead
-            None => [0; 32],
+            None => (0, [0; 32]),
         };
 
-        hash
+        (nonce, hash)
     }
 
     pub fn headers(&self) -> Vec<u8> {
