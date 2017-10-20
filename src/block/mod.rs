@@ -1,6 +1,6 @@
 use hex::ToHex;
 use time;
-use pow::Pow;
+use pow;
 
 const HASH_BYTE_SIZE: usize = 32;
 pub const HASH_BIT_SIZE: usize = 256;
@@ -60,9 +60,7 @@ impl Block {
     }
 
     fn calculate_hash(&self) -> (u64, Sha256Hash) {
-        // TODO Only needs run
-        let pow = Pow::new(&self);
-        let (nonce, hash) = match pow.run() {
+        let (nonce, hash) = match pow::run(&self) {
             Some((nonce, hash)) => (nonce, hash),
             // TODO return an Option instead
             None => (0, [0; 32]),
