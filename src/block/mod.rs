@@ -58,8 +58,8 @@ impl Block {
     fn calculate_hash(&self) -> Sha256Hash {
         let mut hasher = Sha256::new();
         hasher.input(&self.headers());
+        let mut hash = Sha256Hash::default();
 
-        let mut hash: Sha256Hash = Default::default();
         hasher.result(&mut hash);
 
         hash
