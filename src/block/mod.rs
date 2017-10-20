@@ -2,9 +2,10 @@ use hex::ToHex;
 use time;
 use pow::Pow;
 
-const HASH_SIZE: usize = 32;
+const HASH_BYTE_SIZE: usize = 32;
+pub const HASH_BIT_SIZE: usize = 256;
 
-pub type Sha256Hash = [u8; HASH_SIZE];
+pub type Sha256Hash = [u8; HASH_BYTE_SIZE];
 
 #[derive(Debug, Default)]
 pub struct Block {
