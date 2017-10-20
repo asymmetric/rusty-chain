@@ -29,9 +29,9 @@ pub fn run(block: &Block) -> Option<(u64, Sha256Hash)> {
 }
 
 fn calculate_hash(block: &Block, nonce: u64) -> Sha256Hash {
-    // TODO should we also hash the target?
     let mut headers = block.headers();
     headers.push(nonce as u8);
+    headers.push(TARGET_BITS as u8);
 
     let mut hasher = Sha256::new();
     hasher.input(&headers);
