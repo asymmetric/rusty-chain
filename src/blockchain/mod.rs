@@ -28,7 +28,8 @@ impl Blockchain {
     }
 
     pub fn traverse(&self) {
-        for block in self.blocks.iter() {
+        for (i, block) in self.blocks.iter().enumerate() {
+            println!("block: {}", i);
             println!("hash: {:?}", block.pretty_hash());
             println!("data: {:?}", block.pretty_data());
             println!()
