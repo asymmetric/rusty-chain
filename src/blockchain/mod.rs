@@ -1,30 +1,31 @@
 use block::Block;
+use error::MiningError;
 
 pub struct Blockchain {
     blocks: Vec<Block>,
 }
 
 impl Blockchain {
-    pub fn new() -> Self {
-        Self {
-            blocks: vec![Block::genesis()],
-        }
+    pub fn new() -> Result<Self, MiningError> {
+        let blocks = Block::genesis()?;
+
+        Ok(Self { blocks: vec![blocks] })
     }
 
-    pub fn add_block(&mut self, data: &str) -> bool {
+    pub fn add_block(&mut self, data: &str) -> Result<bool, MiningError> {
         let block: Block;
         {
             match self.blocks.last() {
                 Some(prev) => {
-                    block = Block::new(data, prev.hash());
+                    block = Block::new(data, prev.hash())?;
                 }
-                None => return false
+                None => return Ok(false),
             }
         }
 
         self.blocks.push(block);
 
-        true
+        Ok(true)
     }
 
     pub fn traverse(&self) {

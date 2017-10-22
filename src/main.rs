@@ -1,14 +1,23 @@
 extern crate rusty_chain;
 
 use rusty_chain::blockchain::Blockchain;
+use rusty_chain::error::MiningError;
 
 fn main() {
     println!("Welcome to Rusty Chain");
 
-    let mut chain = Blockchain::new();
+    if let Err(e) = run() {
+        println!("{}", e);
+    }
+}
+
+fn run() -> Result<(), MiningError> {
+    let mut chain = Blockchain::new()?;
     println!("Send 1 RC to foo");
-    chain.add_block("enjoy, foo!");
+    chain.add_block("enjoy, foo!")?;
 
     println!("Traversing blockchain:\n");
     chain.traverse();
+
+    Ok(())
 }

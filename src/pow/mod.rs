@@ -18,7 +18,7 @@ pub fn run(block: &Block) -> Option<(u64, Sha256Hash)> {
         let hash_int = BigUint::from_bytes_be(&hash);
 
         if hash_int < target {
-            return Some((nonce, hash))
+            return Some((nonce, hash));
         } else {
             nonce += 1;
         }
