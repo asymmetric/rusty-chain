@@ -1,6 +1,6 @@
 use block::{HASH_BIT_SIZE, Block, Sha256Hash};
-use crypto::sha2::Sha256;
 use crypto::digest::Digest;
+use crypto::sha2::Sha256;
 use num_bigint::BigUint;
 use num_traits::One;
 

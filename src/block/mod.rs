@@ -1,8 +1,8 @@
 use hex::ToHex;
 use time;
 
-use pow;
 use error::MiningError;
+use pow;
 
 const HASH_BYTE_SIZE: usize = 32;
 pub const HASH_BIT_SIZE: usize = 256;
