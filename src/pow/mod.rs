@@ -16,16 +16,12 @@ pub fn run(block: &Block) -> Option<(u64, Sha256Hash)> {
     // zeroes.
     target = target << (HASH_BIT_SIZE - TARGET_BITS);
 
-    let mut nonce = 0;
-
-    while nonce < MAX_NONCE {
+    for nonce in 0..MAX_NONCE {
         let hash = calculate_hash(&block, nonce);
         let hash_int = BigUint::from_bytes_be(&hash);
 
         if hash_int < target {
             return Some((nonce, hash));
-        } else {
-            nonce += 1;
         }
     }
 
