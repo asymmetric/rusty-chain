@@ -10,7 +10,9 @@ const MAX_NONCE: u64 = 100_000;
 
 // Runs the POW algorithm on a block, i.e. it calculates HASH(header + nonce) until the hash
 // fulfills the difficulty requirement.
-pub fn run(block: &Block) -> Option<(u64, Sha256Hash)> {
+//
+// Returns the nonce.
+pub fn run(block: &Block) -> Option<u64> {
     // The target is a number we compare the hash to. It is a HASH_BIT_SIZE bit binary with DIFFICULTY_BITS
     // zeroes.
     let target = BigUint::one() << (HASH_BIT_SIZE - DIFFICULTY_BITS);
@@ -20,7 +22,7 @@ pub fn run(block: &Block) -> Option<(u64, Sha256Hash)> {
         let hash_int = BigUint::from_bytes_be(&hash);
 
         if hash_int < target {
-            return Some((nonce, hash));
+            return Some(nonce);
         }
     }
 
@@ -28,7 +30,7 @@ pub fn run(block: &Block) -> Option<(u64, Sha256Hash)> {
 
 }
 
-fn calculate_hash(block: &Block, nonce: u64) -> Sha256Hash {
+pub fn calculate_hash(block: &Block, nonce: u64) -> Sha256Hash {
     let mut headers = block.headers();
     headers.push(nonce as u8);
     headers.push(DIFFICULTY_BITS as u8);

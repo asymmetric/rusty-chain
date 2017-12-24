@@ -14,7 +14,6 @@ pub struct Block {
     // block headers
     timestamp: i64,
     prev_block_hash: Sha256Hash,
-    hash: Sha256Hash,
     // The nonce is used by every full node to verify the hash.
     nonce: u64,
 
@@ -28,15 +27,13 @@ impl Block {
             timestamp: Self::timestamp(),
             data: Self::convert_data(data),
             prev_block_hash: prev_hash,
-            hash: Default::default(),
             nonce: 0,
         };
 
         s.calculate_hash()
             .ok_or(MiningError)
-            .and_then(|(nonce, hash)| {
+            .and_then(|nonce| {
                 s.nonce = nonce;
-                s.hash = hash;
 
                 Ok(s)
             })
@@ -50,11 +47,11 @@ impl Block {
     }
 
     pub fn hash(&self) -> Sha256Hash {
-        self.hash.clone()
+        pow::calculate_hash(&self, self.nonce)
     }
 
     pub fn pretty_hash(&self) -> String {
-        self.hash.to_hex()
+        self.hash().to_hex()
     }
 
     pub fn pretty_parent(&self) -> String {
@@ -70,7 +67,7 @@ impl Block {
             .unwrap_or_else(|e| format!("Invalid UTF-8 sequence: {}", e))
     }
 
-    fn calculate_hash(&self) -> Option<(u64, Sha256Hash)> {
+    fn calculate_hash(&self) -> Option<u64> {
         pow::run(&self)
     }
 
