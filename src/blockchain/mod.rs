@@ -6,6 +6,7 @@ pub struct Blockchain {
 }
 
 impl Blockchain {
+    // Initializes a new blockchain with a genesis block.
     pub fn new() -> Result<Self, MiningError> {
         let blocks = Block::genesis()?;
 

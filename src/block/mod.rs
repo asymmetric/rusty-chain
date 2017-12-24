@@ -15,9 +15,10 @@ pub struct Block {
     timestamp: i64,
     prev_block_hash: Sha256Hash,
     hash: Sha256Hash,
+    // The nonce is used by every full node to verify the hash.
     nonce: u64,
 
-    // transactions
+    // Instead of transaction, blocks contain data.
     data: Vec<u8>,
 }
 
@@ -41,6 +42,9 @@ impl Block {
             })
     }
 
+    // Creates a genesis block, which is a block with no parent.
+    //
+    // The `prev_block_hash` field is set to all zeroes.
     pub fn genesis() -> Result<Self, MiningError> {
         Self::new("Genesis block", Sha256Hash::default())
     }

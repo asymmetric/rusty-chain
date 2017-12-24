@@ -4,11 +4,16 @@ use crypto::sha2::Sha256;
 use num_bigint::BigUint;
 use num_traits::One;
 
+// How many leading zeroes the 32 bit hash should have in order to be considered valid.
 const TARGET_BITS: usize = 5;
 const MAX_NONCE: u64 = 100_000;
 
+// Runs the POW algorithm on a block, i.e. it calculates HASH(header + nonce) until the hash
+// fulfills the difficulty requirement.
 pub fn run(block: &Block) -> Option<(u64, Sha256Hash)> {
     let mut target = BigUint::one();
+    // The target is a number we compare the hash to. It is a HASH_BIT_SIZE bit binary with DIFFICULTY_BITS
+    // zeroes.
     target = target << (HASH_BIT_SIZE - TARGET_BITS);
 
     let mut nonce = 0;
