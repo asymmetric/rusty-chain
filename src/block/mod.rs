@@ -58,10 +58,8 @@ impl Block {
     }
 
     pub fn pretty_data(&self) -> String {
-        match String::from_utf8(self.data.clone()) {
-            Ok(data) => data,
-            Err(e) => format!("Invalid UTF-8 sequence: {}", e),
-        }
+        String::from_utf8(self.data.clone())
+            .unwrap_or_else(|e| format!("Invalid UTF-8 sequence: {}", e))
     }
 
     fn calculate_hash(&self) -> Option<(u64, Sha256Hash)> {
