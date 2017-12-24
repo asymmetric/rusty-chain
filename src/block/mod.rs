@@ -53,6 +53,10 @@ impl Block {
         self.hash.to_hex()
     }
 
+    pub fn pretty_parent(&self) -> String {
+        self.prev_block_hash.to_hex()
+    }
+
     pub fn data(&self) -> &[u8] {
         self.data.as_slice()
     }

@@ -32,6 +32,7 @@ impl Blockchain {
         for (i, block) in self.blocks.iter().enumerate() {
             println!("block: {}", i);
             println!("hash: {:?}", block.pretty_hash());
+            println!("parent: {:?}", block.pretty_parent());
             println!("data: {:?}", block.pretty_data());
             println!()
         }
