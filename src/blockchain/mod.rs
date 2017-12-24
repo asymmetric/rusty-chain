@@ -13,20 +13,25 @@ impl Blockchain {
         Ok(Self { blocks: vec![blocks] })
     }
 
-    pub fn add_block(&mut self, data: &str) -> Result<bool, MiningError> {
+    // Adds a newly-forged block to the chain.
+    pub fn add_block(&mut self, data: &str) -> Result<(), MiningError> {
         let block: Block;
         {
             match self.blocks.last() {
                 Some(prev) => {
                     block = Block::new(data, prev.hash())?;
                 }
-                None => return Ok(false),
+                // Adding a block to an empty blockchain is an error, a genesis block needs to be
+                // created first.
+                None => {
+                    return Err(MiningError)
+                }
             }
         }
 
         self.blocks.push(block);
 
-        Ok(true)
+        Ok(())
     }
 
     pub fn traverse(&self) {
