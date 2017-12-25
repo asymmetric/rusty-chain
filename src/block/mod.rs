@@ -22,6 +22,7 @@ pub struct Block {
 }
 
 impl Block {
+    // Creates a new block.
     pub fn new(data: &str, prev_hash: Sha256Hash) -> Result<Self, MiningError> {
         let mut s = Self {
             timestamp: Self::timestamp(),
@@ -31,7 +32,7 @@ impl Block {
         };
 
         s.calculate_hash()
-            .ok_or(MiningError)
+            .ok_or(MiningError::Iteration)
             .and_then(|nonce| {
                 s.nonce = nonce;
 

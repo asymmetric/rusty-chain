@@ -7,7 +7,7 @@ fn main() {
     println!("Welcome to Rusty Chain");
 
     if let Err(e) = run() {
-        println!("{}", e);
+        println!("Error: {}", e);
     }
 }
 

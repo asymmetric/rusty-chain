@@ -24,7 +24,7 @@ impl Blockchain {
                 // Adding a block to an empty blockchain is an error, a genesis block needs to be
                 // created first.
                 None => {
-                    return Err(MiningError)
+                    return Err(MiningError::NoParent)
                 }
             }
         }
