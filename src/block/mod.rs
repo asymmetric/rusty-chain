@@ -1,5 +1,5 @@
 use hex::ToHex;
-use time;
+use chrono::prelude::*;
 
 use error::MiningError;
 use pow;
@@ -25,7 +25,7 @@ impl Block {
     // Creates a new block.
     pub fn new(data: &str, prev_hash: Sha256Hash) -> Result<Self, MiningError> {
         let mut s = Self {
-            timestamp: Self::timestamp(),
+            timestamp: Self::calculate_timestamp(),
             data: Self::convert_data(data),
             prev_block_hash: prev_hash,
             nonce: 0,
@@ -84,10 +84,8 @@ impl Block {
         vec
     }
 
-    fn timestamp() -> i64 {
-        time::now_utc()
-            .to_timespec()
-            .sec
+    fn calculate_timestamp() -> i64 {
+        Utc::now().timestamp()
     }
 
     fn convert_data(data: &str) -> Vec<u8> {

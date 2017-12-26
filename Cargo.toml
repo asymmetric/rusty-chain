@@ -5,7 +5,7 @@ authors = ["Lorenzo Manacorda <lorenzo@mailbox.org>"]
 
 [dependencies]
 rust-crypto = "^0.2"
-time = "0.1"
+chrono = "^0.4"
 hex = "^0.2"
 num-bigint = "0.1.40"
 num-traits = "0.1.40"
