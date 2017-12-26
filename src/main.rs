@@ -1,14 +1,18 @@
 extern crate rusty_chain;
 
+use std::process;
+
 use rusty_chain::blockchain::Blockchain;
 use rusty_chain::error::MiningError;
 
 fn main() {
     println!("Welcome to Rusty Chain");
 
-    if let Err(e) = run() {
-        println!("Error: {}", e);
-    }
+    run().
+        unwrap_or_else(|e| {
+            println!("Error: {}", e);
+            process::exit(1)
+        })
 }
 
 fn run() -> Result<(), MiningError> {

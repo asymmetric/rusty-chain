@@ -8,3 +8,4 @@ pub mod block;
 pub mod blockchain;
 pub mod error;
 pub mod pow;
+pub mod util;

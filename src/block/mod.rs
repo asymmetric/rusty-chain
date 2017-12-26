@@ -3,13 +3,14 @@ use chrono::prelude::*;
 
 use error::MiningError;
 use pow;
+use util;
 
 const HASH_BYTE_SIZE: usize = 32;
 pub const HASH_BIT_SIZE: usize = 256;
 
 pub type Sha256Hash = [u8; HASH_BYTE_SIZE];
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct Block {
     // block headers
     timestamp: i64,
@@ -26,9 +27,9 @@ impl Block {
     pub fn new(data: &str, prev_hash: Sha256Hash) -> Result<Self, MiningError> {
         let mut s = Self {
             timestamp: Self::calculate_timestamp(),
-            data: Self::convert_data(data),
             prev_block_hash: prev_hash,
             nonce: 0,
+            data: Self::convert_data(data),
         };
 
         s.calculate_hash()
@@ -47,16 +48,31 @@ impl Block {
         Self::new("Genesis block", Sha256Hash::default())
     }
 
+    // Field getters.
+    // Calculates and returns the SHA-256 of the headers.
     pub fn hash(&self) -> Sha256Hash {
         pow::calculate_hash(&self, self.nonce)
     }
 
+    // Returns the hash as a hexadecimal string.
     pub fn pretty_hash(&self) -> String {
         self.hash().to_hex()
     }
 
+    pub fn parent(&self) -> Sha256Hash {
+        self.prev_block_hash
+    }
+
     pub fn pretty_parent(&self) -> String {
         self.prev_block_hash.to_hex()
+    }
+
+    pub fn timestamp(&self) -> i64 {
+        self.timestamp
+    }
+
+    pub fn nonce(&self) -> u64 {
+        self.nonce
     }
 
     pub fn data(&self) -> &[u8] {
@@ -72,14 +88,12 @@ impl Block {
         pow::run(&self)
     }
 
+    // TODO document that tihs only exports a few fields and why
     pub fn headers(&self) -> Vec<u8> {
         let mut vec = Vec::new();
 
-        vec.extend_from_slice(&self.timestamp
-            .to_string()
-            .as_bytes());
+        vec.extend_from_slice(&util::convert_u64_to_u8(self.timestamp as u64));
         vec.extend_from_slice(&self.prev_block_hash);
-        vec.extend_from_slice(&self.data);
 
         vec
     }
