@@ -17,6 +17,8 @@ pub struct Block {
     prev_block_hash: Sha256Hash,
     // The nonce is used by every full node to verify the hash.
     nonce: u64,
+    // The target this block was mined with.
+    difficulty: usize,
 
     // Instead of transaction, blocks contain data.
     data: Vec<u8>,
@@ -29,13 +31,15 @@ impl Block {
             timestamp: Self::calculate_timestamp(),
             prev_block_hash: prev_hash,
             nonce: 0,
+            difficulty: 0,
             data: Self::convert_data(data),
         };
 
         s.calculate_hash()
             .ok_or(MiningError::Iteration)
-            .and_then(|nonce| {
+            .and_then(|(nonce, difficulty)| {
                 s.nonce = nonce;
+                s.difficulty = difficulty;
 
                 Ok(s)
             })
@@ -84,7 +88,7 @@ impl Block {
             .unwrap_or_else(|e| format!("Invalid UTF-8 sequence: {}", e))
     }
 
-    fn calculate_hash(&self) -> Option<u64> {
+    fn calculate_hash(&self) -> Option<(u64, usize)> {
         pow::run(&self)
     }
 
