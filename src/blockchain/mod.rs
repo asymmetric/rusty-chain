@@ -2,6 +2,8 @@ use block::Block;
 use error::MiningError;
 
 pub struct Blockchain {
+    // The target this block was mined with.
+    difficulty: usize,
     blocks: Vec<Block>,
 }
 
