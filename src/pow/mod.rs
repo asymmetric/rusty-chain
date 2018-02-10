@@ -6,7 +6,7 @@ use num_traits::One;
 use util;
 
 // How many leading zeroes the 256 bit hash should have in order to be considered valid.
-const DIFFICULTY_BITS: usize = 5;
+pub const DEFAULT_DIFFICULTY: usize = 5;
 // TODO use exponentiation, 2 ** 32
 const MAX_NONCE: u64 = 10_000_000;
 

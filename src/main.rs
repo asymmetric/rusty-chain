@@ -8,7 +8,13 @@ use rusty_chain::error::MiningError;
 
 use clap::{Arg, App};
 
+struct RuntimeOptions {
+    difficulty: usize,
+}
+
 fn main() {
+    let default_diff = rusty_chain::DEFAULT_DIFFICULTY.to_string();
+
     let matches = App::new("Rusty Chain")
         .version("0.0.1")
         .author("(ↄ) asymmetric")
@@ -18,11 +24,17 @@ fn main() {
              .takes_value(true)
              .help("The target difficulty while hashing")
              // TODO take default from somewhere else
-             .default_value("5")
+             .default_value(&default_diff)
              )
          .get_matches();
 
     println!("Welcome to Rusty Chain");
+
+    let difficulty = matches.value_of("difficulty").unwrap_or(&default_diff).parse::<usize>().unwrap_or(rusty_chain::DEFAULT_DIFFICULTY);
+
+    let options = RuntimeOptions {
+        difficulty: difficulty,
+    };
 
     run().
         unwrap_or_else(|e| {

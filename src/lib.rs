@@ -9,3 +9,5 @@ pub mod blockchain;
 pub mod error;
 pub mod pow;
 pub mod util;
+
+pub use pow::DEFAULT_DIFFICULTY;
