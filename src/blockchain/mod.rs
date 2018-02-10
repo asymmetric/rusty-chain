@@ -9,19 +9,24 @@ pub struct Blockchain {
 
 impl Blockchain {
     // Initializes a new blockchain with a genesis block.
-    pub fn new() -> Result<Self, MiningError> {
-        let blocks = Block::genesis()?;
+    pub fn new(difficulty: usize) -> Result<Self, MiningError> {
+        let blocks = Block::genesis(difficulty)?;
 
-        Ok(Self { blocks: vec![blocks] })
+        Ok(
+            Self {
+                difficulty: difficulty,
+                blocks: vec![blocks]
+            }
+        )
     }
 
-    // Adds a newly-forged block to the chain.
+    // Adds a newly-mined block to the chain.
     pub fn add_block(&mut self, data: &str) -> Result<(), MiningError> {
         let block: Block;
         {
             match self.blocks.last() {
                 Some(prev) => {
-                    block = Block::new(data, prev.hash())?;
+                    block = Block::new(data, self.difficulty, prev.hash())?;
                 }
                 // Adding a block to an empty blockchain is an error, a genesis block needs to be
                 // created first.

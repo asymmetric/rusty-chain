@@ -26,20 +26,19 @@ pub struct Block {
 
 impl Block {
     // Creates a new block.
-    pub fn new(data: &str, prev_hash: Sha256Hash) -> Result<Self, MiningError> {
+    pub fn new(data: &str, difficulty: usize, prev_hash: Sha256Hash) -> Result<Self, MiningError> {
         let mut s = Self {
             timestamp: Self::calculate_timestamp(),
             prev_block_hash: prev_hash,
             nonce: 0,
-            difficulty: 0,
+            difficulty: difficulty,
             data: Self::convert_data(data),
         };
 
         s.calculate_hash()
             .ok_or(MiningError::Iteration)
-            .and_then(|(nonce, difficulty)| {
+            .and_then(|nonce| {
                 s.nonce = nonce;
-                s.difficulty = difficulty;
 
                 Ok(s)
             })
@@ -48,8 +47,8 @@ impl Block {
     // Creates a genesis block, which is a block with no parent.
     //
     // The `prev_block_hash` field is set to all zeroes.
-    pub fn genesis() -> Result<Self, MiningError> {
-        Self::new("Genesis block", Sha256Hash::default())
+    pub fn genesis(difficulty: usize) -> Result<Self, MiningError> {
+        Self::new("Genesis block", difficulty, Sha256Hash::default())
     }
 
     // Field getters.
@@ -83,12 +82,16 @@ impl Block {
         self.data.as_slice()
     }
 
+    pub fn difficulty(&self) -> usize {
+        self.difficulty
+    }
+
     pub fn pretty_data(&self) -> String {
         String::from_utf8(self.data.clone())
             .unwrap_or_else(|e| format!("Invalid UTF-8 sequence: {}", e))
     }
 
-    fn calculate_hash(&self) -> Option<(u64, usize)> {
+    fn calculate_hash(&self) -> Option<u64> {
         pow::run(&self)
     }
 

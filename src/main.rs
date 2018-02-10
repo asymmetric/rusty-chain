@@ -36,15 +36,15 @@ fn main() {
         difficulty: difficulty,
     };
 
-    run().
+    run(&options).
         unwrap_or_else(|e| {
             println!("Error: {}", e);
             process::exit(1)
         })
 }
 
-fn run() -> Result<(), MiningError> {
-    let mut chain = Blockchain::new()?;
+fn run(options: &RuntimeOptions) -> Result<(), MiningError> {
+    let mut chain = Blockchain::new(options.difficulty)?;
     println!("Send 1 RC to foo");
     chain.add_block("enjoy, foo!")?;
 
