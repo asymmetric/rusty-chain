@@ -35,9 +35,12 @@ impl Block {
             data: Self::convert_data(data),
         };
 
+        let started_at = Utc::now();
         s.calculate_hash()
             .ok_or(MiningError::Iteration)
             .and_then(|nonce| {
+                println!("Hash/sec: {}", calculate_hashrate(started_at, nonce));
+
                 s.nonce = nonce;
 
                 Ok(s)
@@ -113,4 +116,15 @@ impl Block {
         data.to_owned()
             .into_bytes()
     }
+}
+
+fn calculate_hashrate(started_at: DateTime<Utc>, nonce: u64) -> u64{
+    let finished_at = Utc::now();
+    let mut d = finished_at.signed_duration_since(started_at).num_seconds();
+
+    if d == 0 {
+        d = 1;
+    }
+
+    nonce / d as u64
 }
