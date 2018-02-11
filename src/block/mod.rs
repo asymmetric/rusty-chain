@@ -114,7 +114,7 @@ impl Block {
 
     fn convert_data(data: &str) -> Vec<u8> {
         data.to_owned()
-            .into_bytes()
+            .into()
     }
 }
 
