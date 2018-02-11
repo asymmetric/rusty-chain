@@ -32,6 +32,8 @@ fn main() {
 
     let difficulty = matches.value_of("difficulty").unwrap_or(&default_diff).parse::<usize>().unwrap_or(rusty_chain::DEFAULT_DIFFICULTY);
 
+    println!("Creating blockchain with difficulty: {}", difficulty);
+
     let options = RuntimeOptions {
         difficulty: difficulty,
     };
