@@ -102,7 +102,7 @@ impl Block {
     pub fn headers(&self) -> Vec<u8> {
         let mut vec = Vec::new();
 
-        vec.extend_from_slice(&util::convert_u64_to_u8(self.timestamp as u64));
+        vec.extend_from_slice(&util::convert_u64_to_u8_array(self.timestamp as u64));
         vec.extend_from_slice(&self.prev_block_hash);
 
         vec

@@ -36,7 +36,7 @@ pub fn run(block: &Block) -> Option<u64> {
 
 pub fn calculate_hash(block: &Block, nonce: u64) -> Sha256Hash {
     let mut headers = block.headers();
-    headers.extend_from_slice(&util::convert_u64_to_u8(nonce));
+    headers.extend_from_slice(&util::convert_u64_to_u8_array(nonce));
 
     // TODO: removed this for now, as it's not in the struct
     // headers.push(DIFFICULTY_BITS as u8);
