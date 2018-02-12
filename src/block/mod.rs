@@ -17,8 +17,6 @@ pub struct Block {
     prev_block_hash: Sha256Hash,
     // The nonce is used by every full node to verify the hash.
     nonce: u64,
-    // The target this block was mined with.
-    difficulty: usize,
 
     // Instead of transaction, blocks contain data.
     data: Vec<u8>,
@@ -31,12 +29,11 @@ impl Block {
             timestamp: Self::calculate_timestamp(),
             prev_block_hash: prev_hash,
             nonce: 0,
-            difficulty: difficulty,
             data: Self::convert_data(data),
         };
 
         let started_at = Utc::now();
-        s.calculate_hash()
+        s.calculate_hash(difficulty)
             .ok_or(MiningError::Iteration)
             .and_then(|nonce| {
                 println!("Hash/sec: {}", calculate_hashrate(started_at, nonce));
@@ -85,17 +82,13 @@ impl Block {
         self.data.as_slice()
     }
 
-    pub fn difficulty(&self) -> usize {
-        self.difficulty
-    }
-
     pub fn pretty_data(&self) -> String {
         String::from_utf8(self.data.clone())
             .unwrap_or_else(|e| format!("Invalid UTF-8 sequence: {}", e))
     }
 
-    fn calculate_hash(&self) -> Option<u64> {
-        pow::run(&self)
+    fn calculate_hash(&self, difficulty: usize) -> Option<u64> {
+        pow::run(&self, difficulty)
     }
 
     // TODO document that tihs only exports a few fields and why

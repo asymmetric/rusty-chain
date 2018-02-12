@@ -15,11 +15,11 @@ const MAX_NONCE: u64 = 10_000_000;
 //
 // Returns the nonce.
 // TODO only pass headers
-pub fn run(block: &Block) -> Option<u64> {
+pub fn run(block: &Block, difficulty: usize) -> Option<u64> {
     println!("Mining block containing \"{}\"", &block.pretty_data());
     // The target is a number we compare the hash to. It is a HASH_BIT_SIZE bit binary with
     // DEFAULT_DIFFICULTY leading zeroes.
-    let target = BigUint::one() << (HASH_BIT_SIZE - block.difficulty());
+    let target = BigUint::one() << (HASH_BIT_SIZE - difficulty);
 
     for nonce in 0..MAX_NONCE {
         let hash = calculate_hash(&block, nonce);
