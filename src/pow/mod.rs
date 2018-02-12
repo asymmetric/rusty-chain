@@ -5,7 +5,7 @@ use num_bigint::BigUint;
 use num_traits::One;
 use util;
 
-// How many leading zeroes the 256 bit hash should have in order to be considered valid.
+// How many leading zeroes the hex hash should have in order to be considered valid.
 pub const DEFAULT_DIFFICULTY: usize = 5;
 // TODO use exponentiation, 2 ** 32
 const MAX_NONCE: u64 = 10_000_000;
@@ -18,8 +18,9 @@ const MAX_NONCE: u64 = 10_000_000;
 pub fn run(block: &Block, difficulty: usize) -> Option<u64> {
     println!("Mining block containing \"{}\"", &block.pretty_data());
     // The target is a number we compare the hash to. It is a HASH_BIT_SIZE bit binary with
-    // DEFAULT_DIFFICULTY leading zeroes.
-    let target = BigUint::one() << (HASH_BIT_SIZE - difficulty);
+    // DEFAULT_DIFFICULTY * 4 leading zeroes, which translated to hex means DEFAULT_DIFFICULTY
+    // zeroes.
+    let target = BigUint::one() << (HASH_BIT_SIZE - difficulty * 4);
 
     for nonce in 0..MAX_NONCE {
         let hash = calculate_hash(&block, nonce);
